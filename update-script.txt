@@ -1,0 +1,5 @@
+mkdir script
+cd script
+
+ezcompile.exe -script ../ezcompile.vcxproj
+echo -e "mkdir bin\nmv a.exe bin/ezcompile.exe" >> clang.sh
