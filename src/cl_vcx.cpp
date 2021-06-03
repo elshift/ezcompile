@@ -72,7 +72,7 @@ bool CL_VCX::ParseStd(VCXProj* Proj, EzConfig* out_Cfg)
 			cpp = CppStd_2a;
 		}
 		else
-			printf("[MSBuild] Warning: unknown LanguageStandard \"%s\", using compiler default\n",
+			printf("[MSBuild] Warning: unknown LanguageStandard \"%s\". Using compiler default\n",
 				std.c_str());
 
 		out_Cfg->LangStd().val.cpp = cpp;

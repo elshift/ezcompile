@@ -105,7 +105,6 @@ EzPath EzPath::Relative(const EzPath& Dest) const
 	std::string str;
 	EzPath src = Absolute(), dst = Dest.Absolute();
 	size_t rootLen = str.length();
-	Position* cont = nullptr; // Which path continues
 
 	if (_ez_stricmp(dst.Root().String().c_str(), src.Root().String().c_str()))
 	{
@@ -115,40 +114,27 @@ EzPath EzPath::Relative(const EzPath& Dest) const
 	}
 
 	auto pos_src = src.Begin(), pos_dst = dst.Begin();
-	while (true)
+	while (pos_src != src.End() && pos_dst != dst.End())
 	{
-		if (pos_src != src.End() && pos_dst != dst.End())
+		if (pos_src.View() != pos_dst.View())
 		{
-			if (pos_src.View() != pos_dst.View())
-			{
-				do
-					str += "../", ++pos_src;
-				while (pos_src != src.End());
-
-				cont = &pos_dst;
-				break;
-			}
-		}
-		else
-		{
-			if (pos_src != src.End())
-				cont = &pos_src;
-			else if (pos_dst != dst.End())
-				cont = &pos_dst;
+			do
+				str += "../", ++pos_src;
+			while (pos_src != src.End());
 			break;
 		}
 
 		++pos_src, ++pos_dst;
 	}
 
-	if (cont)
+	for (; pos_src.Valid(); ++pos_src)
+		str += "../";
+
+	for (; pos_dst.Valid();)
 	{
-		for (; cont->Valid();)
-		{
-			str += cont->View();
-			if ((++(*cont)).Valid())
-				str += '/';
-		}
+		str += pos_dst.View();
+		if ((++pos_dst).Valid())
+			str += '/';
 	}
 
 	return str;

@@ -28,7 +28,7 @@ private:
 	const char** m_argv;
 };
 
-// Choose who manages the commandline base on input file type
+// Choose who manages the commandline based on input file type
 class CL_Tool
 {
 public:
