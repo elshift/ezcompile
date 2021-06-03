@@ -66,6 +66,9 @@
     <ClInclude Include="src\langs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ezpath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -111,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\cl_vcx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ezpath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

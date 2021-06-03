@@ -330,12 +330,8 @@ bool MSBS_ArgRule(const char* Str, size_t Len, size_t Pos, size_t* out_End)
 
 	size_t end = Pos;
 
-	const char* debug = Str + end;
-
 	for (; end < Len && Str[end] != ',' && Str[end] != ')'; ++end)
 	{
-		debug = Str + end;
-
 		if (MSBS_IsQuote(Str[end]))
 		{
 			if (!MSBS_StrRule(Str, Len, end, &end))
@@ -358,8 +354,6 @@ bool MSBS_ArgRule(const char* Str, size_t Len, size_t Pos, size_t* out_End)
 
 			end--;
 		}
-
-		debug = Str + end;
 	}
 
 	// Cut whitespace

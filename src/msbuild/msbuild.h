@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <minics/cs_object.h>
+#include <ezpath.h>
 
 class VSSol;
 class MSBS_Expr;
@@ -20,7 +21,7 @@ public:
 	VCXEnv& Env() { return m_env; }
 	VCXProj* Proj() { return m_proj.get(); }
 	const VCXProj* Proj() const { return m_proj.get(); }
-	size_t GetIncludeDirs(std::list<std::string>* out_Dirs) const;
+	size_t GetIncludeDirs(std::list<EzPath>* out_Dirs) const;
 	const std::list<std::string>& HxxFiles() const;
 	const std::list<std::string>& CxxFiles() const;
 

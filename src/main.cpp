@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <sstream>
+#include <fstream>
 #include "cl.h"
 #include "ezcompiler.h"
+#include "ezpath.h"
 
 /*
 * ezcompile commandline:
@@ -79,22 +82,34 @@ int main(int argc, const char** argv)
 	if (makeScript)
 	{
 		// TODO: Output cmd to appropriate <compiler>.sh file when more compilers are added
-		FILE* f;
-		if (fopen_s(&f, "clang.sh", "w") || !f)
-			return quit("ezcompile failed to write script");
+		std::ofstream f = std::ofstream("clang.sh");
+		if (!f)
+			return quit("ezcompile failed to write script file");
 
 		std::string cmd = (clang.GenerateCmd() + " \"" + clang.CxxFileName() + '"');
 
-		fwrite(cmd.c_str(), sizeof(cmd[0]), cmd.length(), f);
-		printf("Wrote cmd to clang.sh:\n%s\n", cmd.c_str());
+		f.write(cmd.c_str(), cmd.size());
+		f.close();
 
-		fclose(f);
+		printf("Wrote cmd to clang.sh:\n%s\n", cmd.c_str());
 		return clang.GenerateCxxFile() ? 0 : -1;
 	}
 	else
 	{
-		std::string cmd = clang.GenerateCmd() + ' ' + EzCompiler::GenerateStrList(" ", clang.cxxFiles);
-		system(cmd.c_str());
+		std::stringstream cmd;
+		cmd << clang.GenerateCmd() + ' ';
+
+		EzPath out = clang.OutDir();
+		for (auto it = clang.cxxFiles.begin(); it != clang.cxxFiles.end();)
+		{
+			cmd << '"' << out.Relative(*it).String() << '"';
+			if (++it == clang.cxxFiles.end())
+				break;
+			cmd << ' ';
+		}
+
+		printf("Running cmd: %s\n", cmd.str().c_str());
+		system(cmd.str().c_str());
 	}
 
 	return 0;

@@ -21,8 +21,9 @@ bool EzConfig::GenerateCxxFile() const
 	if (f.fail())
 		return false;
 
-	for (const std::string& cxx : cxxFiles)
-		f << "#include <" << cxx << '>' << std::endl;
+	EzPath out = OutDir();
+	for (const EzPath& cxx : cxxFiles)
+		f << "#include \"" << out.Relative(cxx).String() << '"' << std::endl;
 
 	f.close();
     return !f.fail();
@@ -53,6 +54,20 @@ std::string EzCompiler::GenerateArgList(const char* Flag, const std::list<std::s
 	{
 		result << Flag << " \"" << *it << '"';
 		if (++it != Values.end())
+			result << ' ';
+	}
+	return result.str();
+}
+
+std::string EzCompiler::GeneratePathList(const char* Flag, const std::list<EzPath>& Paths) const
+{
+	EzPath out = OutDir();
+
+	std::stringstream result;
+	for (auto it = Paths.begin(); it != Paths.end();)
+	{
+		result << Flag << " \"" << out.Relative(*it).String() << '"';
+		if (++it != Paths.end())
 			result << ' ';
 	}
 	return result.str();

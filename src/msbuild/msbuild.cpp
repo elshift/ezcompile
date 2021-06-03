@@ -4,8 +4,8 @@
 
 #include <vector>
 #include <stdio.h>
+#include <ezpath.h>
 #include <stdexcept>
-#include <filesystem>
 #include <pugixml.hpp>
 #include <minics/cs_state.h>
 #include <minics/cs_string.h>
@@ -91,12 +91,13 @@ void MSBuild::PassMSBSArgs(CS_State& S, const std::list<std::string>& Args) cons
 	}
 }
 
-size_t MSBuild::GetIncludeDirs(std::list<std::string>* out_Dirs) const
+size_t MSBuild::GetIncludeDirs(std::list<EzPath>* out_Dirs) const
 {
 	size_t i = 0;
 	size_t count;
 	CS_State state;
 	const VCXItemDefGroup* defs = m_proj->SelectedCfg();
+	std::list<std::string> lines;
 
 	auto cl = defs->find("ClCompile");
 	if (cl == defs->end())
@@ -106,14 +107,14 @@ size_t MSBuild::GetIncludeDirs(std::list<std::string>* out_Dirs) const
 	if (dirs == cl->second.end())
 		return 0;
 
-	count = VCXProj::GetLines(dirs->second, out_Dirs);
+	count = VCXProj::GetLines(dirs->second, &lines);
 
-	for (auto it = out_Dirs->begin(); it != out_Dirs->end(); ++it, ++i)
+	for (auto it = lines.begin(); it != lines.end(); ++it, ++i)
 	{
-		if (i < out_Dirs->size() - count)
+		if (i < lines.size() - count)
 			continue;
 
-		*it = Evaluate(state, *it);
+		out_Dirs->push_back(Evaluate(state, *it));
 	}
 	return count;
 }
@@ -288,8 +289,8 @@ bool MSBuild::GetFileDir(const std::string& File, std::string* out_Dir)
 
 		*out_Dir = File.substr(0, bck);
 		if (out_Dir->empty())
-			*out_Dir = std::filesystem::current_path().string();
-		else *out_Dir = std::filesystem::absolute(*out_Dir).string();
+			*out_Dir = EzPath::CurrentPath().String();
+		else *out_Dir = EzPath(*out_Dir).Absolute().String();
 		*out_Dir = EnsureTrailingSlash(*out_Dir);
 	}
 	catch (...) {

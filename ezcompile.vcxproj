@@ -150,8 +150,8 @@
     <ClCompile Include="src\cl.cpp" />
     <ClCompile Include="src\cl_vcx.cpp" />
     <ClCompile Include="src\ezcompiler.cpp" />
-    <ClCompile Include="src\MiniCS\cs_int.cpp" />
-    <ClCompile Include="src\MiniCS\cs_state.cpp" />
+    <ClCompile Include="src\minics\cs_int.cpp" />
+    <ClCompile Include="src\minics\cs_state.cpp" />
     <ClCompile Include="src\msbuild\cs_msbuild.cpp" />
     <ClCompile Include="src\msbuild\load_vcxproj.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -162,6 +162,7 @@
     <ClCompile Include="src\msbuild\msbuild.cpp" />
     <ClCompile Include="src\msbuild\msbuild_syntax.cpp" />
     <ClCompile Include="src\msbuild\vcxproj.cpp" />
+    <ClCompile Include="src\ezpath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ezcompiler.h" />
@@ -170,7 +171,7 @@
     <ClInclude Include="src\langs.h" />
     <ClInclude Include="src\minics\cs_bool.h" />
     <ClInclude Include="src\minics\cs_iconvertible.h" />
-    <ClInclude Include="src\MiniCS\cs_int.h" />
+    <ClInclude Include="src\minics\cs_int.h" />
     <ClInclude Include="src\minics\cs_calldelegate.h" />
     <ClInclude Include="src\minics\cs_object.h" />
     <ClInclude Include="src\minics\cs_state.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="src\msbuild\msbuild_syntax.h" />
     <ClInclude Include="src\msbuild\vcxproj.h" />
     <ClInclude Include="src\msbuild\load_vcxproj.h" />
+    <ClInclude Include="src\ezpath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

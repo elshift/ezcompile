@@ -27,7 +27,7 @@ int CL_VCX::Run(const char* File, const CL_Args& Args, EzConfig* out_Cfg)
 
 	printf("Config #: ");
 
-	gets_s(input);
+	fgets(input, sizeof(input), stdin);
 	i = atoi(input);
 	if (i < 0 || (size_t)i >= proj->ItemDefGroups().size())
 		i = 0;

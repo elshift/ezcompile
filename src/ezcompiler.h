@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <string>
+#include "ezpath.h"
 #include "langs.h"
 
 class EzConfig
@@ -18,11 +19,11 @@ public:
 	const EzLang& Lang() const { return m_lang; }
 	LangStd& LangStd() { return m_lang.std; } // Use this to edit/configure the standard
 
-	std::list<std::string> inclDirs;
-	std::list<std::string> cxxFiles;
+	std::list<EzPath> inclDirs;
+	std::list<EzPath> cxxFiles;
 
 private:
-	std::string m_outdir;			// - Output dir
+	std::string m_outdir; // - Output dir
 	EzLang m_lang;
 };
 
@@ -41,6 +42,7 @@ public:
 
 	// - Makes a repeating pattern of "<Flag> Values[n] ..." (ex: "-I dir1 -I dir2 -I dir3")
 	static std::string GenerateArgList(const char* Flag, const std::list<std::string>& Values);
+	std::string GeneratePathList(const char* Flag, const std::list<EzPath>& Paths) const;
 
 	// - MAkes a repeating pattern of "Values[n] <Space> Values[n + 1] ..." (ex: "one.cpp,two.cpp") 
 	static std::string GenerateStrList(const char* Space, const std::list<std::string>& Values);
@@ -63,6 +65,6 @@ public:
 
 	std::string LangStdFlag() const override;
 	std::string GenerateCmd() const override {
-		return GenerateCmdBase() + GenerateArgList("-I", inclDirs);
+		return GenerateCmdBase() + GeneratePathList("-I", inclDirs);
 	}
 };

@@ -96,26 +96,8 @@ public:
 	const CS_Member* GetMember(const std::string& Name);
 
 public: // For internal use in all CS_Object types
-	template <class T>
-	void _Bind(const char* Name, T Val, int Flags = CSFlag_Public) {
-		GetType()->_Bind(Name, Val, Flags);//m_members[Name] = CS_Member(Val, Flags);
-	}
-	//template <class T>
-	/*void _Bind(const char* Name, CS_BoundMethod_t Val, int Flags = CSFlag_Public) {
-		m_members[Name] = CS_Member(Val, Flags);
-	}
-	void _Bind(const char* Name, CS_StaticMethod_t Val, int Flags = CSFlag_Public) {
-		m_members[Name] = CS_Member(Val, Flags);
-	}
-	void _Bind(const char* Name, CS_StaticAccess_t Val, int Flags = CSFlag_Public) {
-		m_members[Name] = CS_Member(Val, Flags);
-	}*/
-
-	// TODO: You forgot that _Bind will bind to the *current object*.
-	// All the member related stuff should belong to CS_Type
-	// _Bind can stay part of CS_Object, but must call in to CS_Type
-	// (CS_Type should avoid using CS_Object's "_Bind" though, lest it causes infinite recursion)
-
-protected:
-	//std::map<std::string, CS_Member> m_members;
+	void _Bind(const char* Name, CS_StaticMethod_t Val, int Flags = CSFlag_Public);
+	void _Bind(const char* Name, CS_BoundMethod_t Val, int Flags = CSFlag_Public);
+	void _Bind(const char* Name, CS_StaticAccess_t Val, int Flags = CSFlag_Public);
+	void _Bind(const char* Name, CS_BoundAccess_t Val, int Flags = CSFlag_Public);
 };
